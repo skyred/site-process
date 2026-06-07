@@ -38,8 +38,8 @@ class KubectlTransport implements TransportInterface
     {
         # TODO: How/where do we complain if a required argument is not available?
         $namespace = $this->siteAlias->get('kubectl.namespace');
-        $tty = $this->tty && $this->siteAlias->get('kubectl.tty', false) ? "true" : "false";
-        $interactive = $this->tty && $this->siteAlias->get('kubectl.interactive', false) ? "true" : "false";
+        $tty = $this->tty || $this->siteAlias->get('kubectl.tty', false) ? "true" : "false";
+        $interactive = $this->tty || $this->siteAlias->get('kubectl.interactive', false) ? "true" : "false";
         $resource = $this->siteAlias->get('kubectl.resource');
         $container = $this->siteAlias->get('kubectl.container');
         $context = $this->siteAlias->get('kubectl.context');
@@ -78,9 +78,11 @@ class KubectlTransport implements TransportInterface
     {
         return array_merge(
             [
-                'cd',
+                '/bin/sh',
+                '-c',
+                'cd "$1" && shift && "$@"',
+                '--',
                 $cd_remote,
-                Shell::op('&&'),
             ],
             $args
         );
