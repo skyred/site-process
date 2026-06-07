@@ -1,5 +1,10 @@
 # Changelog
 
+### 6.1.0 - 2026/Jun/6
+
+* Support kubectl.context in KubectlTransport (#92)
+* Bugfix: Can't drush ssh into kubectl (#94)
+
 ### 6.0.1 - 2026/Mar/28
 
 * Allow Symfony 8 (#87)
